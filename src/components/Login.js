@@ -9,6 +9,14 @@ const VALID_EMAIL = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))
 
 let loadedRememberMe = loadFromStorage('rememberMe') || { remember: false, email: null };
 
+// deviceId required to enable multiple sessions and
+// future session management
+let deviceId = loadFromStorage('deviceId');
+if (!deviceId) {
+    deviceId = `web browser`;
+    saveToStorage('deviceId', deviceId);
+}
+
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
@@ -29,7 +37,8 @@ function Login () {
                 "authToken": "KLDJS89D7F8DSFIUSD9FJSDCSD9C8UYS",
                 "authTokenExpiration": "30m",
                 "refreshToken": "VKOCVIOPXIV90V890CX8V90XC786CXVCX",
-                "refreshTokenExpiration": "30d"
+                "refreshTokenExpiration": "30d",
+                "deviceId": "web browser"
             };
         }
         return await (await fetch(`${api.baseUrl}/login`, api.formatPostRequest(values))).json();
@@ -40,10 +49,11 @@ function Login () {
             // trim email for mobile phones
             let values = {
                 email,
-                password
+                password,
+                deviceId
             };
             let authenticationTimestamp = new Date().getTime();
-            console.log(`logging in to ${api.baseUrl}`);
+            console.log(`logging in to ${api.baseUrl} from ${deviceId}`);
             let json = await loginPostRequest(values);
             if (json.error) {
                 alert(json.error);
