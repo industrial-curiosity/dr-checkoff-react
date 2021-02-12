@@ -22,13 +22,13 @@ function App() {
 }
 
 function Main() {
-  const [ user, ] = useContext(UserContext);
+    const [ user, ] = useContext(UserContext);
 
-  if (user.name) {
-      return <Sample/>;
-  }
+    if (user.name || user.email) {
+        return <Sample/>;
+    }
 
-  return <Login/>;
+    return <Login/>;
 }
 
 export default App;

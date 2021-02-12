@@ -23,7 +23,7 @@ function Sample () {
             <header className="App-header">
                 <img src={logo} className="App-logo hover:ring-2 hover:ring-red-500" alt="logo" />
                 <p className="hover:ring-2 hover:bg-red-500">
-                    Welcome, {user.name}, to Dr Checkoff!
+                    Welcome{user.name ? `, ${user.name},` : '' } to Dr Checkoff!
                 </p>
                 <p className="hover:ring-2 hover:bg-red-500">
                     Authentication token expires in {ms(user.authTokenExpiration - Date.now())}

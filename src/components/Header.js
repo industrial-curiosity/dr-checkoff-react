@@ -11,7 +11,7 @@ function Header () {
     };
 
     let signOutButton;
-    if (user.name) {
+    if (user.name || user.email) {
         signOutButton = <button className="bg-blue-400 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
             type="button"
             onClick={logout}
