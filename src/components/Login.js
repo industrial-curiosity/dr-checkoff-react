@@ -26,6 +26,7 @@ function Login () {
     const [ email, setEmail ] = useState(loadedRememberMe.email || '');
     const [ password, setPassword ] = useState('');
     const [ rememberMe, setRememberMe ] = useState(loadedRememberMe.remember);
+    const [ isSigningIn, setIsSigningIn ] = useState(false);
 
     let query = useQuery();
     const __DEV__ = query.get("dev") === "true";
@@ -45,6 +46,7 @@ function Login () {
     };
 
     const login = async () => {
+        setIsSigningIn(true);
         try {
             // trim email for mobile phones
             let values = {
@@ -55,8 +57,9 @@ function Login () {
             let authenticationTimestamp = new Date().getTime();
             console.log(`logging in to ${api.baseUrl} from ${deviceId}`);
             let json = await loginPostRequest(values);
-            if (json.error) {
-                alert(json.error);
+            if (json.reason) {
+                alert(json.reason);
+                setIsSigningIn(false);
             } else {
                 console.log('login successful');
                 // convert authTokenExpiration and refreshTokenExpiration to local timestamps
@@ -79,10 +82,12 @@ function Login () {
                 }
                 saveToStorage('rememberMe', loadedRememberMe);
                 setUser(json);
+                setIsSigningIn(false);
             }
         } catch (e) {
             console.log(e);
             alert("A network error occurred.");
+            setIsSigningIn(false);
         }
     }
 
@@ -133,7 +138,7 @@ function Login () {
                 <button className="p-4 bg-blue-400 hover:bg-blue-800 disabled:opacity-50 text-white font-bold py-2 px-4 rounded"
                     type="button"
                     onClick={login}
-                    disabled={!emailEntered || !passwordEntered || emailValidationWarning || passwordValidationWarning}
+                    disabled={isSigningIn || !emailEntered || !passwordEntered || emailValidationWarning || passwordValidationWarning}
                 >
                     Sign In
                 </button>
