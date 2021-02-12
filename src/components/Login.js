@@ -130,7 +130,7 @@ function Login () {
                 {passwordValidationWarning}
             </div>
             <div className="flex items-center">
-                <button className="p-4 bg-blue-400 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+                <button className="p-4 bg-blue-400 hover:bg-blue-800 disabled:opacity-50 text-white font-bold py-2 px-4 rounded"
                     type="button"
                     onClick={login}
                     disabled={!emailEntered || !passwordEntered || emailValidationWarning || passwordValidationWarning}
