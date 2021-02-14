@@ -10,10 +10,17 @@ function Sample () {
     const [ user, setUser ] = useContext(UserContext);
 
     const logoutIfNotRememberMe = () => {
-        if (!loadFromStorage('rememberMe').remember) {
-            console.log('page refreshed with remember me not flagged, signing out');
+        let signOut = (msg) => {
+            console.log(msg);
             deleteFromStorage('userSession');
             setUser({});
+        };
+        if (user.refreshTokenExpiration - pageInitialLoadTime <= 0) {
+            signOut('page refreshed with expired refresh token, signing out');
+        } else {
+            if (!loadFromStorage('rememberMe').remember) {
+                signOut('page refreshed with remember me not flagged, signing out');
+            }
         }
     };
     if (user.authTokenExpiration - pageInitialLoadTime <= 0) logoutIfNotRememberMe();
